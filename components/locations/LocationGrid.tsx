@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { Location, AmenityKey, AMENITY_LABELS } from "@/lib/types";
 import LocationCard from "./LocationCard";
+
+const MapView = lazy(() => import("./MapView"));
 
 const FILTERABLE_AMENITIES: AmenityKey[] = [
   "wifi",
@@ -27,6 +29,7 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
   const [query, setQuery] = useState("");
   const [activeAmenities, setActiveAmenities] = useState<AmenityKey[]>([]);
   const [activeCity, setActiveCity] = useState(initialCity);
+  const [view, setView] = useState<"list" | "map">("list");
 
   const cities = [...new Set(locations.map((l) => l.city))].sort();
 
@@ -132,14 +135,46 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
         </div>
       </div>
 
-      {/* Results count */}
-      <p className="text-white/40 text-sm mb-5">
-        {filtered.length} location{filtered.length !== 1 ? "s" : ""} available
-        {activeAmenities.length > 0 && ` · filtered by ${activeAmenities.length} amenity${activeAmenities.length > 1 ? "ies" : ""}`}
-      </p>
+      {/* Results count + view toggle */}
+      <div className="flex items-center justify-between mb-5">
+        <p className="text-white/40 text-sm">
+          {filtered.length} location{filtered.length !== 1 ? "s" : ""} available
+          {activeAmenities.length > 0 && ` · filtered by ${activeAmenities.length} amenity${activeAmenities.length > 1 ? "ies" : ""}`}
+        </p>
+        <div className="flex items-center bg-surface border border-white/10 rounded-lg p-1 gap-1">
+          <button
+            onClick={() => setView("list")}
+            className={`text-xs px-3 py-1.5 rounded-md transition-all ${
+              view === "list"
+                ? "bg-amber text-navy font-semibold"
+                : "text-white/50 hover:text-white"
+            }`}
+          >
+            ☰ List
+          </button>
+          <button
+            onClick={() => setView("map")}
+            className={`text-xs px-3 py-1.5 rounded-md transition-all ${
+              view === "map"
+                ? "bg-amber text-navy font-semibold"
+                : "text-white/50 hover:text-white"
+            }`}
+          >
+            🗺 Map
+          </button>
+        </div>
+      </div>
 
-      {/* Grid */}
-      {filtered.length === 0 ? (
+      {/* List or Map */}
+      {view === "map" ? (
+        <Suspense fallback={
+          <div className="rounded-xl border border-white/10 bg-surface flex items-center justify-center" style={{ height: "600px" }}>
+            <p className="text-white/40 text-sm">Loading map…</p>
+          </div>
+        }>
+          <MapView locations={filtered} />
+        </Suspense>
+      ) : filtered.length === 0 ? (
         <div className="text-center py-20 text-white/30">
           <p className="text-4xl mb-3">🏢</p>
           <p className="text-lg font-medium text-white/50 mb-1">No locations found</p>
