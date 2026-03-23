@@ -1,8 +1,9 @@
-import { sql } from "@vercel/postgres";
+import { getDb } from "@/lib/db";
 import { Review } from "@/lib/types";
 
 export async function getReviewsForLocation(locationId: string): Promise<Review[]> {
-  const { rows } = await sql`
+  const sql = getDb();
+  const rows = await sql`
     SELECT id, "locationId", "authorName", rating, body, "createdAt"
     FROM reviews
     WHERE "locationId" = ${locationId}
@@ -18,7 +19,8 @@ export async function createReview(data: {
   rating: number;
   body: string;
 }): Promise<Review> {
-  const { rows } = await sql`
+  const sql = getDb();
+  const rows = await sql`
     INSERT INTO reviews ("locationId", "authorName", rating, body)
     VALUES (${data.locationId}, ${data.authorName}, ${data.rating}, ${data.body})
     RETURNING id, "locationId", "authorName", rating, body, "createdAt"
