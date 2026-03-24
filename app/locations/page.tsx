@@ -1,4 +1,4 @@
-import { locations } from "@/lib/locations";
+import { locations, getBasicLocations } from "@/lib/locations";
 import LocationGrid from "@/components/locations/LocationGrid";
 
 export const metadata = {
@@ -12,16 +12,17 @@ export default async function LocationsPage({
   searchParams: Promise<{ city?: string }>;
 }) {
   const { city } = await searchParams;
+  const basicCount = getBasicLocations().length;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="mb-8">
         <p className="text-ww-gray text-xs font-medium uppercase tracking-widest mb-2">
-          All Access Basic · United States
+          United States · All Access
         </p>
         <h1 className="font-display text-3xl text-ww-black">All Locations</h1>
         <p className="text-ww-gray text-sm mt-1">
-          {locations.length} locations across the US available to your membership
+          {basicCount} locations included in your Basic membership · {locations.length} total across all tiers
         </p>
       </div>
       <LocationGrid locations={locations} initialCity={city ?? ""} />

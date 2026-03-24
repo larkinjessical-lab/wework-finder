@@ -1,12 +1,12 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getLocation, locations } from "@/lib/locations";
+import { getLocation, getBasicLocations } from "@/lib/locations";
 import { AMENITY_LABELS, AMENITY_ICONS } from "@/lib/types";
 import GoogleReviewsPanel from "@/components/detail/GoogleReviewsPanel";
 import UserReviewsList from "@/components/detail/UserReviewsList";
 
 export async function generateStaticParams() {
-  return locations.map((loc) => ({ id: loc.id }));
+  return getBasicLocations().map((loc) => ({ id: loc.id }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {

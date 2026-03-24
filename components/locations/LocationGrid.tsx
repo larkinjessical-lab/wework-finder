@@ -29,12 +29,16 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
   const [query, setQuery] = useState("");
   const [activeAmenities, setActiveAmenities] = useState<AmenityKey[]>([]);
   const [activeCity, setActiveCity] = useState(initialCity);
-  const [view, setView] = useState<"list" | "map">("list");
+  const [view, setView] = useState<"list" | "map">("map");
 
-  const cities = [...new Set(locations.map((l) => l.city))].sort();
+  // Only Basic locations shown in list and city pills
+  const basicLocations = locations.filter((l) => l.tier === "all-access-basic");
+  const cities = [...new Set(basicLocations.map((l) => l.city))].sort();
 
   const q = (activeCity || query).toLowerCase().trim();
-  const filtered = locations.filter((loc) => {
+
+  // List always shows Basic only, filtered
+  const filteredBasic = basicLocations.filter((loc) => {
     const matchesQuery =
       !q ||
       loc.city.toLowerCase().includes(q) ||
@@ -46,6 +50,12 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
       activeAmenities.every((a) => loc.amenities.includes(a));
     return matchesQuery && matchesAmenities;
   });
+
+  // Map shows all locations (Basic + Plus), but only Basic obeys city/amenity filter
+  const mapLocations = [
+    ...filteredBasic,
+    ...locations.filter((l) => l.tier === "all-access-plus"),
+  ];
 
   function toggleAmenity(amenity: AmenityKey) {
     setActiveAmenities((prev) =>
@@ -67,7 +77,7 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-ww-gray text-sm">🔍</span>
           <input
             type="text"
-            placeholder="Search by city, state, or location name…"
+            placeholder="Search Basic locations by city, state, or name…"
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
@@ -138,7 +148,9 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
       {/* Results count + view toggle */}
       <div className="flex items-center justify-between mb-5">
         <p className="text-ww-gray text-sm">
-          {filtered.length} location{filtered.length !== 1 ? "s" : ""} available
+          {view === "map"
+            ? `${filteredBasic.length} Basic · ${locations.filter((l) => l.tier === "all-access-plus").length} Plus on map`
+            : `${filteredBasic.length} Basic location${filteredBasic.length !== 1 ? "s" : ""}`}
           {activeAmenities.length > 0 && ` · filtered by ${activeAmenities.length} amenity${activeAmenities.length > 1 ? "ies" : ""}`}
         </p>
         <div className="flex items-center bg-ww-surface border border-ww-border rounded-lg p-1 gap-1">
@@ -172,9 +184,9 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
             <p className="text-ww-gray text-sm">Loading map…</p>
           </div>
         }>
-          <MapView locations={filtered} />
+          <MapView locations={mapLocations} />
         </Suspense>
-      ) : filtered.length === 0 ? (
+      ) : filteredBasic.length === 0 ? (
         <div className="text-center py-20">
           <p className="text-4xl mb-3">🏢</p>
           <p className="text-lg font-medium text-ww-black mb-1">No locations found</p>
@@ -182,7 +194,7 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filtered.map((location) => (
+          {filteredBasic.map((location) => (
             <LocationCard key={location.id} location={location} />
           ))}
         </div>

@@ -9,7 +9,8 @@ export function getLocation(id: string): Location | undefined {
 
 export function filterLocations(
   query: string,
-  amenities: AmenityKey[]
+  amenities: AmenityKey[],
+  tier?: "all-access-basic" | "all-access-plus"
 ): Location[] {
   const q = query.toLowerCase().trim();
   return locations.filter((loc) => {
@@ -24,8 +25,18 @@ export function filterLocations(
       amenities.length === 0 ||
       amenities.every((a) => loc.amenities.includes(a));
 
-    return matchesQuery && matchesAmenities;
+    const matchesTier = !tier || loc.tier === tier;
+
+    return matchesQuery && matchesAmenities && matchesTier;
   });
+}
+
+export function getBasicLocations(): Location[] {
+  return locations.filter((l) => l.tier === "all-access-basic");
+}
+
+export function getPlusLocations(): Location[] {
+  return locations;
 }
 
 export function getAllCities(): string[] {

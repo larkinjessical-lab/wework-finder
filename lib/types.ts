@@ -72,7 +72,7 @@ export interface Location {
   amenities: AmenityKey[];
   googlePlaceId: string;
   photos: string[];
-  tier: "all-access-basic";
+  tier: "all-access-basic" | "all-access-plus";
   description: string;
 }
 
