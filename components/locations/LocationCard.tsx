@@ -13,29 +13,25 @@ export default function LocationCard({ location }: Props) {
   return (
     <Link
       href={`/locations/${location.id}`}
-      className="group block bg-surface border border-white/10 rounded-xl overflow-hidden
-        hover:border-amber/40 hover:shadow-[0_0_24px_rgba(196,147,63,0.12)]
-        transition-all duration-200"
+      className="group block bg-white border border-ww-border rounded-xl overflow-hidden
+        hover:border-ww-green hover:shadow-md transition-all duration-200"
     >
-      {/* Color band */}
-      <div className="h-1 bg-gradient-to-r from-amber to-amber-dark" />
-
       <div className="p-5">
         {/* City / State */}
-        <p className="text-amber text-xs font-semibold tracking-widest uppercase mb-1">
+        <p className="text-ww-green text-xs font-semibold tracking-widest uppercase mb-1">
           {location.city}, {location.state}
         </p>
 
         {/* Name */}
-        <h3 className="text-white font-semibold text-base mb-2 group-hover:text-amber transition-colors line-clamp-1">
+        <h3 className="text-ww-black font-display text-lg mb-2 group-hover:text-ww-green transition-colors line-clamp-1">
           {location.name}
         </h3>
 
         {/* Address */}
-        <p className="text-white/40 text-xs mb-4 line-clamp-1">{location.address}</p>
+        <p className="text-ww-gray text-xs mb-4 line-clamp-1">{location.address}</p>
 
         {/* Description */}
-        <p className="text-white/60 text-sm leading-relaxed mb-4 line-clamp-2">
+        <p className="text-ww-gray text-sm leading-relaxed mb-4 line-clamp-2">
           {location.description}
         </p>
 
@@ -45,7 +41,7 @@ export default function LocationCard({ location }: Props) {
             <AmenityBadge key={amenity} amenity={amenity} />
           ))}
           {remaining > 0 && (
-            <span className="text-white/40 text-xs px-2 py-0.5 rounded-full border border-white/10">
+            <span className="text-ww-gray text-xs px-2 py-0.5 rounded-full border border-ww-border">
               +{remaining} more
             </span>
           )}
@@ -53,9 +49,9 @@ export default function LocationCard({ location }: Props) {
       </div>
 
       {/* Footer */}
-      <div className="px-5 py-3 border-t border-white/10 flex items-center justify-between">
-        <span className="text-white/30 text-xs">{location.phone}</span>
-        <span className="text-amber text-xs font-medium group-hover:translate-x-0.5 transition-transform">
+      <div className="px-5 py-3 border-t border-ww-border bg-ww-surface flex items-center justify-between">
+        <span className="text-ww-gray text-xs">{location.phone}</span>
+        <span className="text-ww-green text-xs font-medium group-hover:translate-x-0.5 transition-transform">
           View details →
         </span>
       </div>

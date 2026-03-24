@@ -61,10 +61,10 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
   return (
     <div>
       {/* Search + Filter */}
-      <div className="bg-surface border border-white/10 rounded-xl p-5 mb-8 space-y-4">
+      <div className="bg-ww-surface border border-ww-border rounded-xl p-5 mb-8 space-y-4">
         {/* Search input */}
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-sm">🔍</span>
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-ww-gray text-sm">🔍</span>
           <input
             type="text"
             placeholder="Search by city, state, or location name…"
@@ -73,13 +73,13 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
               setQuery(e.target.value);
               setActiveCity("");
             }}
-            className="w-full bg-navy border border-white/20 rounded-lg pl-9 pr-4 py-2.5 text-white text-sm
-              placeholder:text-white/30 focus:border-amber focus:ring-1 focus:ring-amber/40 outline-none transition"
+            className="w-full bg-white border border-ww-border rounded-lg pl-9 pr-4 py-2.5 text-ww-black text-sm
+              placeholder:text-ww-gray focus:border-ww-green focus:ring-1 focus:ring-ww-green/30 outline-none transition"
           />
           {(query || activeCity) && (
             <button
               onClick={() => { setQuery(""); setActiveCity(""); }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white text-xs"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-ww-gray hover:text-ww-black text-xs"
             >
               ✕
             </button>
@@ -88,7 +88,7 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
 
         {/* City pills */}
         <div>
-          <p className="text-white/40 text-xs uppercase tracking-widest mb-2">City</p>
+          <p className="text-ww-gray text-xs uppercase tracking-widest mb-2">City</p>
           <div className="flex flex-wrap gap-2">
             {cities.map((city) => (
               <button
@@ -96,8 +96,8 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
                 onClick={() => selectCity(city)}
                 className={`text-xs px-3 py-1 rounded-full border transition-all ${
                   activeCity === city
-                    ? "bg-amber text-navy font-semibold border-amber"
-                    : "bg-transparent text-white/60 border-white/20 hover:border-white/40 hover:text-white"
+                    ? "bg-ww-green text-white font-semibold border-ww-green"
+                    : "bg-white text-ww-gray border-ww-border hover:border-ww-green hover:text-ww-black"
                 }`}
               >
                 {city}
@@ -108,7 +108,7 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
 
         {/* Amenity filter chips */}
         <div>
-          <p className="text-white/40 text-xs uppercase tracking-widest mb-2">Filter by amenity</p>
+          <p className="text-ww-gray text-xs uppercase tracking-widest mb-2">Filter by amenity</p>
           <div className="flex flex-wrap gap-2">
             {FILTERABLE_AMENITIES.map((amenity) => (
               <button
@@ -116,8 +116,8 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
                 onClick={() => toggleAmenity(amenity)}
                 className={`text-xs px-3 py-1 rounded-full border transition-all ${
                   activeAmenities.includes(amenity)
-                    ? "bg-amber text-navy font-semibold border-amber"
-                    : "bg-transparent text-white/60 border-white/20 hover:border-white/40 hover:text-white"
+                    ? "bg-ww-green text-white font-semibold border-ww-green"
+                    : "bg-white text-ww-gray border-ww-border hover:border-ww-green hover:text-ww-black"
                 }`}
               >
                 {AMENITY_LABELS[amenity]}
@@ -126,7 +126,7 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
             {activeAmenities.length > 0 && (
               <button
                 onClick={() => setActiveAmenities([])}
-                className="text-xs px-3 py-1 rounded-full border border-white/10 text-white/30 hover:text-white transition-colors"
+                className="text-xs px-3 py-1 rounded-full border border-ww-border text-ww-gray hover:text-ww-black transition-colors"
               >
                 Clear filters
               </button>
@@ -137,17 +137,17 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
 
       {/* Results count + view toggle */}
       <div className="flex items-center justify-between mb-5">
-        <p className="text-white/40 text-sm">
+        <p className="text-ww-gray text-sm">
           {filtered.length} location{filtered.length !== 1 ? "s" : ""} available
           {activeAmenities.length > 0 && ` · filtered by ${activeAmenities.length} amenity${activeAmenities.length > 1 ? "ies" : ""}`}
         </p>
-        <div className="flex items-center bg-surface border border-white/10 rounded-lg p-1 gap-1">
+        <div className="flex items-center bg-ww-surface border border-ww-border rounded-lg p-1 gap-1">
           <button
             onClick={() => setView("list")}
             className={`text-xs px-3 py-1.5 rounded-md transition-all ${
               view === "list"
-                ? "bg-amber text-navy font-semibold"
-                : "text-white/50 hover:text-white"
+                ? "bg-ww-green text-white font-semibold"
+                : "text-ww-gray hover:text-ww-black"
             }`}
           >
             ☰ List
@@ -156,8 +156,8 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
             onClick={() => setView("map")}
             className={`text-xs px-3 py-1.5 rounded-md transition-all ${
               view === "map"
-                ? "bg-amber text-navy font-semibold"
-                : "text-white/50 hover:text-white"
+                ? "bg-ww-green text-white font-semibold"
+                : "text-ww-gray hover:text-ww-black"
             }`}
           >
             🗺 Map
@@ -168,17 +168,17 @@ export default function LocationGrid({ locations, initialCity = "" }: Props) {
       {/* List or Map */}
       {view === "map" ? (
         <Suspense fallback={
-          <div className="rounded-xl border border-white/10 bg-surface flex items-center justify-center" style={{ height: "600px" }}>
-            <p className="text-white/40 text-sm">Loading map…</p>
+          <div className="rounded-xl border border-ww-border bg-ww-surface flex items-center justify-center" style={{ height: "600px" }}>
+            <p className="text-ww-gray text-sm">Loading map…</p>
           </div>
         }>
           <MapView locations={filtered} />
         </Suspense>
       ) : filtered.length === 0 ? (
-        <div className="text-center py-20 text-white/30">
+        <div className="text-center py-20">
           <p className="text-4xl mb-3">🏢</p>
-          <p className="text-lg font-medium text-white/50 mb-1">No locations found</p>
-          <p className="text-sm">Try adjusting your search or removing some filters</p>
+          <p className="text-lg font-medium text-ww-black mb-1">No locations found</p>
+          <p className="text-sm text-ww-gray">Try adjusting your search or removing some filters</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

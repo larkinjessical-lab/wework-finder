@@ -21,7 +21,7 @@ function StarPicker({ value, onChange }: { value: number; onChange: (v: number) 
           onMouseEnter={() => setHovered(star)}
           onMouseLeave={() => setHovered(0)}
           className={`text-2xl transition-all ${
-            star <= (hovered || value) ? "text-amber scale-110" : "text-white/20"
+            star <= (hovered || value) ? "text-ww-green scale-110" : "text-ww-border"
           }`}
         >
           ★
@@ -42,30 +42,20 @@ export default function ReviewForm({ locationId, onReviewAdded }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErrors([]);
-
-    if (rating === 0) {
-      setErrors(["Please select a star rating"]);
-      return;
-    }
-
+    if (rating === 0) { setErrors(["Please select a star rating"]); return; }
     setSubmitting(true);
-
     try {
       const res = await fetch("/api/reviews", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ locationId, authorName, rating, body }),
       });
-
       const data = await res.json();
-
       if (!res.ok) {
         setErrors(data.errors ?? [data.error ?? "Something went wrong"]);
       } else {
         onReviewAdded(data.review);
-        setAuthorName("");
-        setRating(0);
-        setBody("");
+        setAuthorName(""); setRating(0); setBody("");
         setSuccess(true);
         setTimeout(() => setSuccess(false), 4000);
       }
@@ -78,71 +68,60 @@ export default function ReviewForm({ locationId, onReviewAdded }: Props) {
 
   return (
     <section>
-      <h2 className="text-white font-bold text-lg mb-5 border-l-2 border-amber pl-3">
+      <h2 className="font-display text-xl text-ww-black mb-5 border-l-2 border-ww-green pl-3">
         Write a Review
       </h2>
 
       {success && (
-        <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4 mb-4 text-green-400 text-sm">
+        <div className="bg-ww-green-light border border-ww-green/30 rounded-xl p-4 mb-4 text-ww-green text-sm">
           ✓ Your review was posted successfully. Thanks for sharing!
         </div>
       )}
 
       {errors.length > 0 && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-4">
-          {errors.map((e, i) => (
-            <p key={i} className="text-red-400 text-sm">{e}</p>
-          ))}
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
+          {errors.map((e, i) => <p key={i} className="text-red-600 text-sm">{e}</p>)}
         </div>
       )}
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-surface border border-white/10 rounded-xl p-5 space-y-4"
-      >
+      <form onSubmit={handleSubmit} className="bg-ww-surface border border-ww-border rounded-xl p-5 space-y-4">
         <div>
-          <label className="block text-white/60 text-xs uppercase tracking-widest mb-2">
-            Your name
-          </label>
+          <label className="block text-ww-gray text-xs uppercase tracking-widest mb-2">Your name</label>
           <input
             type="text"
             value={authorName}
             onChange={(e) => setAuthorName(e.target.value)}
             placeholder="Jane D."
             maxLength={60}
-            className="w-full bg-navy border border-white/20 rounded-lg px-3 py-2.5 text-white text-sm
-              placeholder:text-white/30 focus:border-amber focus:ring-1 focus:ring-amber/40 outline-none transition"
+            className="w-full bg-white border border-ww-border rounded-lg px-3 py-2.5 text-ww-black text-sm
+              placeholder:text-ww-gray focus:border-ww-green focus:ring-1 focus:ring-ww-green/30 outline-none transition"
           />
         </div>
 
         <div>
-          <label className="block text-white/60 text-xs uppercase tracking-widest mb-2">
-            Rating
-          </label>
+          <label className="block text-ww-gray text-xs uppercase tracking-widest mb-2">Rating</label>
           <StarPicker value={rating} onChange={setRating} />
         </div>
 
         <div>
-          <label className="block text-white/60 text-xs uppercase tracking-widest mb-2">
-            Your review
-          </label>
+          <label className="block text-ww-gray text-xs uppercase tracking-widest mb-2">Your review</label>
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder="What was it like working here? Mention the WiFi speed, seating, noise level, amenities…"
             rows={4}
             maxLength={1000}
-            className="w-full bg-navy border border-white/20 rounded-lg px-3 py-2.5 text-white text-sm
-              placeholder:text-white/30 focus:border-amber focus:ring-1 focus:ring-amber/40 outline-none transition resize-none"
+            className="w-full bg-white border border-ww-border rounded-lg px-3 py-2.5 text-ww-black text-sm
+              placeholder:text-ww-gray focus:border-ww-green focus:ring-1 focus:ring-ww-green/30 outline-none transition resize-none"
           />
-          <p className="text-white/30 text-xs text-right mt-1">{body.length}/1000</p>
+          <p className="text-ww-gray text-xs text-right mt-1">{body.length}/1000</p>
         </div>
 
         <button
           type="submit"
           disabled={submitting}
-          className="w-full bg-amber hover:bg-amber-dark disabled:opacity-50 disabled:cursor-not-allowed
-            text-navy font-semibold rounded-lg px-6 py-2.5 transition-colors text-sm"
+          className="w-full bg-ww-green hover:bg-ww-green-dark disabled:opacity-50
+            text-white font-semibold rounded-lg px-6 py-2.5 transition-colors text-sm"
         >
           {submitting ? "Posting…" : "Post Review"}
         </button>

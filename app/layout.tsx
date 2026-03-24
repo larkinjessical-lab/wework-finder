@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Playfair_Display } from "next/font/google";
+import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 
@@ -8,8 +8,9 @@ const dmSans = DM_Sans({
   variable: "--font-sans",
 });
 
-const playfair = Playfair_Display({
+const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
+  weight: "400",
   variable: "--font-display",
 });
 
@@ -25,11 +26,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${playfair.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-navy text-white">
+    <html lang="en" className={`${dmSans.variable} ${dmSerif.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col bg-ww-white text-ww-black">
         <Navbar />
         <main className="flex-1">{children}</main>
-        <footer className="border-t border-white/10 py-6 text-center text-white/30 text-xs">
+        <footer className="border-t border-ww-border py-6 text-center text-ww-gray text-xs">
           WeWork Finder is an independent tool for All Access Basic members. Not affiliated with WeWork.
         </footer>
       </body>

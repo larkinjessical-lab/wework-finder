@@ -11,7 +11,7 @@ export default function AmenityBadge({ amenity, size = "sm" }: Props) {
 
   if (size === "md") {
     return (
-      <span className="inline-flex items-center gap-1.5 bg-navy-muted text-white/80 text-sm px-3 py-1.5 rounded-full border border-white/10">
+      <span className="inline-flex items-center gap-1.5 bg-ww-surface text-ww-black text-sm px-3 py-1.5 rounded-full border border-ww-border">
         <span>{icon}</span>
         <span>{label}</span>
       </span>
@@ -19,7 +19,7 @@ export default function AmenityBadge({ amenity, size = "sm" }: Props) {
   }
 
   return (
-    <span className="inline-flex items-center gap-1 bg-navy-muted text-white/60 text-xs px-2 py-0.5 rounded-full border border-white/10">
+    <span className="inline-flex items-center gap-1 bg-ww-surface text-ww-gray text-xs px-2 py-0.5 rounded-full border border-ww-border">
       <span className="text-xs">{icon}</span>
       <span>{label}</span>
     </span>
